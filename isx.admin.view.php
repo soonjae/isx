@@ -17,13 +17,20 @@ class isxAdminView extends isx {
 		$config = $oModuleModel->getModuleConfig('isx');
 		Context::set('config',$config);
 		Context::set('isx_config',$oModuleModel->getModuleInfoXml('isx'));
-        Context::set('int_config',$oModuleModel->getModuleInfoXml('integration_search'));
+        	Context::set('int_config',$oModuleModel->getModuleInfoXml('integration_search'));
 	}
 
 	/**
 	 * @brief 설정
 	 **/
 	function dispIsxAdminConfig() {
+		// Get a list of skins
+		$oModuleModel = getModel('module');
+		$skin_list = $oModuleModel->getSkins($this->module_path);
+		Context::set('skin_list',$skin_list);
+		$mskin_list = $oModuleModel->getSkins($this->module_path, 'm.skins');
+		Context::set('mskin_list', $mskin_list);
+
 		// 템플릿 파일 지정
 		$oModuleModel = getModel('module');
 		$modules = $oModuleModel->getModuleList();
@@ -83,6 +90,34 @@ class isxAdminView extends isx {
         Context::set('page', $output->page);
         Context::set('page_navigation', $output->page_navigation);
     }
+
+	function dispIsxAdminSkinInfo()
+	{
+		$oModuleModel = &getModel('module');
+                $config = $oModuleModel->getModuleConfig('isx');
+		$this->setTemplatePath($this->module_path.'tpl');
+		$skin_info = $oModuleModel->loadSkinInfo($this->module_path, $config->skin);
+		$skin_vars = unserialize($config->skin_vars);
+		// value for skin_info extra_vars
+		if(count($skin_info->extra_vars))
+		{
+			foreach($skin_info->extra_vars as $key => $val)
+			{
+				$name = $val->name;
+				$type = $val->type;
+				$value = $skin_vars->{$name};
+				if($type=="checkbox"&&!$value) $value = array();
+				$skin_info->extra_vars[$key]->value= $value;
+			}
+		}
+		Context::set('skin_info', $skin_info);
+		Context::set('skin_vars', $skin_vars);
+		Context::set('module_info', unserialize($config->skin_vars));
+		$security = new Security();
+		$security->encodeHTML('skin_info...');
+		$this->setTemplateFile("skin_info");
+	}
+
 
 }
 /* End of file isx.admin.view.php */

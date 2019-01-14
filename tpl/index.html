@@ -78,7 +78,7 @@
 </div></div>
 <div class="x_control-group ackey">
     <label class="x_control-label">{$lang->keysource}</label>
-<div class="x_controls">
+	<div class="x_controls">
     <label class="x_inline">
         <input type="radio" name="ac_source" value="docu" <!--@if($config->ac_source !='key')-->checked="checked"<!--@end--> />{$lang->docu}
     </label>
@@ -87,12 +87,30 @@
     </label>
     <p>{$lang->about_keysource}</p>
 </div></div>
+<div class="x_control-group">
+	<div class="x_control-group">
+		<label for="skin" class="x_control-label">{$lang->skin}</label>
+		<div class="x_controls">
+			<select name="skin" id="skin">
+				<option loop="$skin_list => $key, $val"  value="{$key}" selected="selected"|cond="$config->skin == $key">{$val->title}</option>
+			</select>
+		</div>
 </div>
-<div class="x_clearfix btnArea">
+<div class="x_control-group">
+		<label for="mskin" class="x_control-label">{$lang->mobile_skin}</label>
+		<div class="x_controls">
+			<select name="mskin" id="mskin">
+				<option loop="$mskin_list => $key, $val"  value="{$key}" selected="selected"|cond="$config->mskin == $key">{$val->title}</option>
+			</select>
+	</div>
+</div>
+</div>
+</div><div class="x_clearfix btnArea">
 		<div class="x_pull-right">
 			<button class="x_btn x_btn-primary" type="submit">
         {$lang->cmd_registration}
     </div>
+</div>
 </div>
 </form>
 <include target="footer.html" />

@@ -11,5 +11,7 @@
 		<action name="procIsxGetKeyList" type="controller" standalone="true" />
 		<action name="getKeywordList" type="model" standalone="true" />
 		<action name ="dispIsxAdminHitList" type="view" standalone="true" />
+		<action name ="dispIsxAdminSkinInfo" type="view" standalone="true" />
+		<action name ="procIsxAdminInsertSkin" type="controller" standalone="true" />
     </actions>
 </module>

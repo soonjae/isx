@@ -79,24 +79,24 @@ class isxView extends isx
 
 		// 권한 체크
 		if(!$this->grant->access) return new Object(-1,'msg_not_permitted');
-
+		$isxconfig = $this->isxconfig ;
 		$config = $oModuleModel->getModuleConfig('integration_search');
 		Context::set('config',$config);
-		$skin = 'default';
-        $template_path = sprintf('%sskins/%s', $this->module_path, $skin);
+		if(!$isxconfig->skin) $isxconfig->skin  = 'isxdefault';
+        	$template_path = sprintf('%sskins/%s', $this->module_path, $isxconfig->skin);
 
 		// Template path
-        $this->setTemplatePath($template_path);
-        $skin_vars = ($config->skin_vars) ? unserialize($config->skin_vars) : new stdClass;
-        Context::set('module_info', $skin_vars);
+        	$this->setTemplatePath($template_path);
+        	$skin_vars = ($isxconfig->skin_vars) ? unserialize($isxconfig->skin_vars) : new stdClass;
+        	Context::set('module_info', $skin_vars);
 
 		$target = $config->target;
 		if(!$target) $target = 'include';
 		
 		if(empty($config->target_module_srl))
-            $module_srl_list = array();
-        else
-            $module_srl_list = explode(',',$config->target_module_srl);
+            		$module_srl_list = array();
+        	else
+            		$module_srl_list = explode(',',$config->target_module_srl);
 
 		// 검색어 변수 설정
 		$is_keyword = Context::get('is_keyword');
@@ -113,13 +113,18 @@ class isxView extends isx
 		{
 			$oISx = &getModel('isx');
 			$oIS = &getModel('integration_search');
+			$oTrackbackModel = getAdminModel('trackback');
+			Context::set('trackback_module_exist', true);
+			if(!$oTrackbackModel)
+			{
+				Context::set('trackback_module_exist', false);
+			}
 			switch($where)
 			{
 				case 'document' :
 					$search_target = Context::get('search_target');
-					if(!in_array($search_target, array('title','content','title_content','tag'))) $search_target = 'title';
+					if(!in_array($search_target, array('title','content','title_content','tag'))) $search_target = 'title_content';
 					Context::set('search_target', $search_target);
-
 					$output = $oIS->getDocuments($target, $module_srl_list, $search_target, $is_keyword, $page, 10);
 					Context::set('output', $output);
 					$this->setTemplateFile("document", $page);
@@ -133,7 +138,6 @@ class isxView extends isx
 					$search_target = Context::get('search_target');
 					if(!in_array($search_target, array('title','url','blog_name','excerpt'))) $search_target = 'title';
 					Context::set('search_target', $search_target);
-
 					$output = $oIS->getTrackbacks($target, $module_srl_list, $search_target, $is_keyword, $page, 10);
 					Context::set('output', $output);
 					$this->setTemplateFile("trackback", $page);
@@ -148,20 +152,19 @@ class isxView extends isx
 					Context::set('output', $output);
 					$this->setTemplateFile("file", $page);
 					break;
-				 case 'livexe' :
-                    $output = $oISx->getLivexeSearch($target, $module_srl_list, $is_keyword, $page, 20);
-                    Context::set('output', $output);
-                    $this->setTemplateFile("livexe", $page);
-                    break;
+				case 'livexe' :
+                    			$output = $oISx->getLivexeSearch($target, $module_srl_list, $is_keyword, $page, 20);
+                    			Context::set('output', $output);
+                    			$this->setTemplateFile("livexe", $page);
+                    			break;
 				default :
-					if($this->isxconfig->use_document == 'Y') 	$output['document'] = $oIS->getDocuments($target, $module_srl_list, 'title', $is_keyword, $page, 5);
-					if($this->isxconfig->use_comment == 'Y') 	$output['comment'] = $oIS->getComments($target, $module_srl_list, $is_keyword, $page, 5);
-					if($this->isxconfig->use_trackback == 'Y')	$output['trackback'] = $oIS->getTrackbacks($target, $module_srl_list, 'title', $is_keyword, $page, 5);
-					if($this->isxconfig->use_multimedia == 'Y')	$output['multimedia'] = $oIS->getImages($target, $module_srl_list, $is_keyword, $page, 5);
-					if($this->isxconfig->use_file == 'Y')		$output['file'] = $oIS->getFiles($target, $module_srl_list, $is_keyword, $page, 5);
-					if($this->isxconfig->use_livexe == 'Y') 	$output['livexe'] = $oISx->getLivexeSearch($search_target,$is_keyword, $page, 5);
+					$output['document'] = $oIS->getDocuments($target, $module_srl_list, 'title_content', $is_keyword, $page, 5);
+					$output['comment'] = $oIS->getComments($target, $module_srl_list, $is_keyword, $page, 5);
+					$output['trackback'] = $oIS->getTrackbacks($target, $module_srl_list, 'title', $is_keyword, $page, 5);
+					$output['multimedia'] = $oIS->getImages($target, $module_srl_list, $is_keyword, $page, 5);
+					$output['file'] = $oIS->getFiles($target, $module_srl_list, $is_keyword, $page, 5);
 					Context::set('search_result', $output);
-					Context::set('serach_target',$search_target);
+					Context::set('search_target', 'title_content');
 					$this->setTemplateFile("index", $page);
 					break;
 			}

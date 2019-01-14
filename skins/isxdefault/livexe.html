@@ -1,0 +1,55 @@
+<!--#include("header.html")-->
+
+<h3 class="subTitle">{$lang->livexe} <span>({number_format($output->total_count)})</span></h3>
+
+<ul class="subNavigation">
+    <!--@foreach($lang->search_option['livexe'] as $key => $val)-->
+    <li value="{$key}" class="<!--@if($search_target == $key)-->on<!--@end--><!--@if($key=="tag")--> last<!--@end-->"><a href="{getUrl('where','livexe','search_target',$key,'page',1)}">{$val}</a></li>
+    <!--@end-->
+</ul>
+
+
+<!--@if(!count($output->data))-->
+    <span class="noResult">{$lang->msg_no_result}</span>
+<!--@else-->
+    <ul class="searchResult">
+    <!--@foreach($output->data as $key => $val)-->
+			<li>
+			<!--@if($val->thumbnail && $val->thumbnail !='null')-->
+                    <img src="{getUrl()}{$val->thumbnail}" width="100" height="100" class="thumb" />
+                    <!--@else-->
+                    <img src="./modules/livexe/skins/xe_default/img/noimage.jpg" width="100" height="100" class="thumb" />
+                    <!--@end-->
+					<dl>
+					<dt><a href="{$val->link}" target="_blank">
+                    {($val->title)}</a></dt>
+                <dd> {cut_str(preg_replace('/<([^>]+)>/i','',$val->content), 365)} </dd>
+                <!--@if($val->tags)-->
+                {@ $_tags = array() }
+                <ul class="tag" title="Tag">
+                    {@ $_tags = explode(',',$val->tags)}
+                    <!--@foreach($_tags as $t)-->
+                    <li><a href="{getUrl('search_target','tag','search_keyword',$t)}">{htmlspecialchars($t)}</a></li>
+                    <!--@end-->
+                </ul>
+				</dl>
+                <!--@end-->
+				<address><span class="time">{zdate($val->regdate,"Y/m/d H:i")}</span> <a href="{$val->homepage}"><span class="readNum">{htmlspecialchars($val->rss_title)}</span></a> / <strong>{$val->author}</strong> <a href="{$val->rss_url}"><img src="./modules/livexe/skins/xe_default/img/iconRssSmall.gif" alt="rss" /></a> </address>
+			</li>
+	<!--@end-->
+    </ul>
+
+    <!--@if($where == 'livexe' && $output->page_navigation)-->
+        <div class="pagination a1">
+            <a href="{getUrl('page','')}" class="prevEnd">{$lang->first_page}</a> 
+            <!--@while($page_no = $output->page_navigation->getNextPage())-->
+                <!--@if($page == $page_no)-->
+                    <strong>{$page_no}</strong> 
+                <!--@else-->
+                    <a href="{getUrl('page',$page_no)}">{$page_no}</a>
+                <!--@end-->
+            <!--@end-->
+            <a href="{getUrl('page',$output->page_navigation->last_page)}" class="nextEnd">{$lang->last_page}</a>
+        </div>
+    <!--@end-->
+<!--@end-->
