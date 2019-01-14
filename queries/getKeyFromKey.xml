@@ -1,0 +1,18 @@
+<query id="getKeyFromKey" action="select">
+    <tables>
+        <table name="search" />
+    </tables>
+    <columns>
+        <column name="keyword" />
+    </columns>
+    <conditions>
+		<condition operation="like" column="jamo" var="s_jamo" />
+    </conditions>
+	<groups>
+        <group column="keyword" />
+    </groups>
+    <navigation>
+        <index var="sort_index" default="count(*)"  order="desc"/>
+        <list_count var="list_count" default="10" />
+    </navigation>
+</query>

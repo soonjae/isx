@@ -1,0 +1,12 @@
+<div class="x_page-header"><h1>{$lang->isx}<a href="#aboutPage" class="x_icon-question-sign" data-toggle></a></h1></div>
+<p>{$lang->about_isx}</p>
+<p>{$lang->integration_search} : ver {$int_config->version}</p>
+<p>{$lang->isx} : ver {$isx_config->version}</p>
+<!-- 관리자 페이지용 메뉴 -->
+<div class="x_tabbable">
+	<ul class="x_nav x_nav-tabs">
+		<li class="x_active"|cond="$act=='dispIsxAdminConfig'">
+		<a href="{getSiteUrl($module_info->domain,'','module','admin', 'act','dispIsxAdminConfig')}">{$lang->isx_config}</a></li>
+		<li class="x_active"|cond="$act=='dispIsxAdminKeywordlist'">
+		<a href="{getSiteUrl($module_info->domain,'','module','admin', 'act','dispIsxAdminKeywordlist')}">{$lang->isx_keyword_list}</a></li>
+	</ul>

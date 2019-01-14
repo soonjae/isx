@@ -1,0 +1,20 @@
+<query id="getKeywordList" action="select">
+    <tables>
+        <table name="search" />
+    </tables>
+    <columns>
+        <column name="count(*)" alias="count" />
+		<column name="keyword" alisa="keyword" />
+    </columns>
+    <conditions>
+        <condition operation="more" column="regdate" var="regdate" notnull="notnull" />
+    </conditions>
+	<groups>
+        <group column="keyword" />
+    </groups>
+    <navigation>
+        <index var="sort_index" default="count" order="desc" />
+		<list_count var="list_count" default="10" />
+    </navigation>
+
+</query>

@@ -1,0 +1,8 @@
+<query id="deleteSingleKeyword" action="delete">
+    <tables>
+        <table name="search" />
+    </tables>
+	<conditions>
+		<condition operation="equal" column="search_srl" var="search_srl" notnull="notnull" />
+    </conditions>
+</query>

@@ -1,0 +1,98 @@
+<load target="filter/insert_config.xml" />
+<load target="js/isx.js" type="body" />
+<include target="header.html" />
+<form class="x_form-horizontal" action="./" method="get" onsubmit="return procFilter(this, insert_config)">
+<input type="hidden" name="version" value="{$isx_config->version}">
+<div class="x_control-group">
+	<label class="x_control-label">{$lang->isx_use}</label>
+<div class="x_controls">
+	<label class="x_inline">
+        <input type="radio" name="isx_use" value="N" <!--@if($config->isx_use !='Y')-->checked="checked"<!--@end--> />{$lang->notuse}
+	</label>
+	<label class="x_inline">
+		<input type="radio" name="isx_use" value="Y" <!--@if($config->isx_use=='Y')-->checked="checked"<!--@end--> />{$lang->use}
+	</label>
+	<p>{$lang->about_isx_use}</p>
+</div></div>
+<div class="ac">
+<div class="x_control-group isx_use">
+	<label class="x_control-label">{$lang->search_target}</label>
+<div class="x_controls">
+    <label class="x_inline">
+		<input type="checkbox" name="use_document" value="Y" <!--@if($config->use_document=='Y')-->checked="checked"<!--@end--> /> {$lang->document}</label>
+    <label class="x_inline">
+		<input type="checkbox" name="use_comment" value="Y" <!--@if($config->use_comment=='Y')-->checked="checked"<!--@end--> /> {$lang->comment}
+	</label>
+	<label class="x_inline">
+		<input type="checkbox" name="use_trackback" value="Y" <!--@if($config->use_trackback=='Y')-->checked="checked"<!--@end--> /> {$lang->trackback}
+	</label>
+    <label class="x_inline">
+		<input type="checkbox" name="use_multimedia" value="Y" <!--@if($config->use_multimedia=='Y')-->checked="checked"<!--@end--> /> {$lang->multimedia}
+	</label>
+	<label class="x_inline">
+		<input type="checkbox" name="use_file" value="Y" <!--@if($config->use_file=='Y')-->checked="checked"<!--@end--> /> {$lang->file}
+    </label>
+	<label class="x_inline" cond="$LivexeInstall">
+        <input type="checkbox" name="use_livexe" value="Y" <!--@if($config->use_livexe=='Y')-->checked="checked"<!--@end--> /> {$lang->livexe}
+    </label>
+	<p>{$lang->about_target}</p>
+</div></div>
+<div class="x_control-group">
+    <label class="x_control-label">{$lang->keyword_use}</label>
+<div class="x_controls">
+    <label class="x_inline">
+        <input type="radio" name="keyword_use" value="N" <!--@if($config->keyword_use !='Y')-->checked="checked"<!--@end--> />{$lang->notuse}
+    </label>
+    <label class="x_inline">
+        <input type="radio" name="keyword_use" value="Y" <!--@if($config->keyword_use=='Y')-->checked="checked"<!--@end--> />{$lang->use}
+    </label>
+	<p>{$lang->about_keyword_use}</p>
+</div></div>
+<div class="x_control-group">
+    <label class="x_control-label">{$lang->get_use}</label>
+<div class="x_controls">
+    <label class="x_inline">
+        <input type="radio" name="get_use" value="N" <!--@if($config->get_use !='Y')-->checked="checked"<!--@end--> />{$lang->notuse}
+    </label>
+    <label class="x_inline">
+        <input type="radio" name="get_use" value="Y" <!--@if($config->get_use=='Y')-->checked="checked"<!--@end--> />{$lang->use}
+    </label>
+    <p>{$lang->about_get_use}</p>
+</div></div>
+<div class="x_control-group keepkeyword">
+    <label class="x_control-label">{$lang->keep_keyword}</label>
+<div class="x_controls">
+        <input type="text" name="keep_keyword" value="{$config->keep_keyword}" />
+	<p> {$lang->about_keep_keyword}</p>
+</div></div>
+<div class="x_control-group">
+    <label class="x_control-label">{$lang->autocomplete_use}</label>
+<div class="x_controls">
+    <label class="x_inline">
+        <input type="radio" name="ac_use" value="N" <!--@if($config->ac_use !='Y')-->checked="checked"<!--@end--> />{$lang->notuse}
+    </label>
+    <label class="x_inline">
+        <input type="radio" name="ac_use" value="Y" <!--@if($config->ac_use=='Y')-->checked="checked"<!--@end--> />{$lang->use}
+    </label>
+	<p>{$lang->about_autocomplete}</p>
+</div></div>
+<div class="x_control-group ackey">
+    <label class="x_control-label">{$lang->keysource}</label>
+<div class="x_controls">
+    <label class="x_inline">
+        <input type="radio" name="ac_source" value="docu" <!--@if($config->ac_source !='key')-->checked="checked"<!--@end--> />{$lang->docu}
+    </label>
+    <label class="x_inline">
+        <input type="radio" name="ac_source" value="key" <!--@if($config->ac_source=='key')-->checked="checked"<!--@end--> />{$lang->keyword}
+    </label>
+    <p>{$lang->about_keysource}</p>
+</div></div>
+</div>
+<div class="x_clearfix btnArea">
+		<div class="x_pull-right">
+			<button class="x_btn x_btn-primary" type="submit">
+        {$lang->cmd_registration}
+    </div>
+</div>
+</form>
+<include target="footer.html" />

@@ -1,0 +1,8 @@
+<query id="deleteKeyword" action="delete">
+    <tables>
+        <table name="search" />
+    </tables>
+	<conditions>
+        <condition operation="less" column="regdate" var="regdate" notnull="notnull" />
+    </conditions>
+</query>

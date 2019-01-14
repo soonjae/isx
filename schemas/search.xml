@@ -1,0 +1,9 @@
+<table name="search">
+	<column name="search_srl" type="number" size="11" notnull="notnull" auto_increment="auto_increment" primary_key="primary_key" />
+    <column name="member_srl" type="number" size="11" default="0" index="idx_member_srl" />
+    <column name="ipaddress" type="varchar" size="128" notnull="notnull" index="idx_ipaddress" />
+	<column name="keyword" type="varchar" size="250" notnull="notnull" index="idx_keyword" />
+    <column name="jamo" type="varchar" size="250" index="idx_jamo" />
+	<column name="regdate" type="date" index="idx_regdate" />
+</table>
+

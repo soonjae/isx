@@ -1,0 +1,12 @@
+<query id="insertKeyword" action="insert">
+    <tables>
+        <table name="search" />
+    </tables>
+    <columns>
+        <column name="member_srl" var="member_srl" default="" />
+        <column name="regdate" var="regdate" default="curdate()" notnull="notnull"/>
+        <column name="ipaddress" var="ipaddress" notnull="notnull" default="ipaddress()" />
+        <column name="keyword" var="keyword" />
+		<column name="jamo" var="jamo" />
+    </columns>
+</query>

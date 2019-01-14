@@ -1,0 +1,78 @@
+<load target="js/keylist.js" type="body" />
+<style type="text/css">	.isx_del{cursor:pointer}	</style>
+<include target="header.html" />
+<form id="fo_list" action="./" method="get">
+    <input type="hidden" name="module" value="document" />
+    <input type="hidden" name="page" value="{$page}" />
+    <table id="documentListTable" class="x_table x_table-striped x_table-hover">
+        <caption>
+            <div class="x_btn-group x_pull-right">
+            </div>
+        </caption>
+        <thead>
+            <tr>
+                <th scope="col" class="title"><a href="{getUrl('sort_index','keyword','order_type',$r_order,'page','')}">{$lang->keyword}</a></th>
+                <th scope="col" class="nowr"><a href="{getUrl('sort_index','member_srl','order_type',$r_order,'page','')}">{$lang->writer}</a></th>
+                <th scope="col" class="nowr"><a href="{getUrl('sort_index','ipaddress','order_type',$r_order,'page','','page','')}">{$lang->ipaddress}</a></th>
+				<th scope="col" class="nowr"><a href="{getUrl('sort_index','regdate','order_type',$r_order,'page','')}">{$lang->date}</a></th>
+				<th scope="col" class="nowr"></th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr loop="$key_list =>$v,$k">
+                <td class="title">
+{$k['keyword']}</td>
+                <td class="nowr"><a href="#popup_menu_area" class="member_{$k['member_srl']}" cond="$k['member_srl']">{$k['nickname']}</a>
+				<block cond="!$k['member_srl']">{$lang->nomember}</block>
+				</td>
+				<td class="nowr">{$k['ipaddress']}</a></td>
+                <td class="nowr">{zdate($k['regdate'], "Y.m.d H:i:s")}</td>
+				<td><img src='./modules/isx/tpl/css/iconX.gif' class="isx_del" onclick="doDeleteSearch('{$k['search_srl']}')" /> </td>
+            </tr>
+        </tbody>
+		</table>
+    <div class="x_clearfix">
+        <div class="x_btn-group x_pull-right">
+		<p>{$lang->isx}</p>
+	</div></div> 
+</form>
+
+	<form action="./" class="x_pagination x_pull-left" style="margin:-36px 0 0 0">
+    <input type="hidden" name="error_return_url" value="" />
+    <input type="hidden" name="module" value="{$module}" />
+    <input type="hidden" name="act" value="{$act}" />
+    <input cond="$search_keyword" type="hidden" name="search_keyword" value="{$search_keyword}" />
+    <input cond="$search_target" type="hidden" name="search_target" value="{$search_target}" />
+	<ul>
+        <li class="x_disabled"|cond="!$page || $page == 1"><a href="{getUrl('page', '')}">&laquo; {$lang->first_page}</a></li>
+        <block cond="$page_navigation->first_page != 1 && $page_navigation->first_page + $page_navigation->page_count > $page_navigation->last_page - 1 && $page_navigation->page_count != $page_navigation->total_page">
+        {@$isGoTo = true}
+        <li>
+            <a href="#goTo" data-toggle title="{$lang->cmd_go_to_page}">&hellip;</a>
+            <span cond="$isGoTo" id="goTo" class="x_input-append">
+                <input type="number" min="1" max="{$page_navigation->last_page}" required name="page" title="{$lang->cmd_go_to_page}" />
+                <button type="submit" class="x_add-on">Go</button>
+            </span>
+        </li>
+        </block>
+
+        <!--@while($page_no = $page_navigation->getNextPage())-->
+        {@$last_page = $page_no}
+        <li class="x_active"|cond="$page_no == $page"><a  href="{getUrl('page', $page_no)}">{$page_no}</a></li>
+        <!--@end-->
+
+        <block cond="$last_page != $page_navigation->last_page && $last_page + 1 != $page_navigation->last_page">
+        {@$isGoTo = true}
+        <li>
+            <a href="#goTo" data-toggle title="{$lang->cmd_go_to_page}">&hellip;</a>
+            <span cond="$isGoTo" id="goTo" class="x_input-append">
+                <input type="number" min="1" max="{$page_navigation->last_page}" required name="page" title="{$lang->cmd_go_to_page}" />
+                <button type="submit" class="x_add-on">Go</button>
+            </span>
+        </li>
+        </block>
+        <li class="x_disabled"|cond="$page == $page_navigation->last_page"><a href="{getUrl('page', $page_navigation->last_page)}" title="{$page_navigation->last_page}">{$lang->last_page} &raquo;</a></li>
+    </ul>
+</form>
+
+<include target="footer.html" />
