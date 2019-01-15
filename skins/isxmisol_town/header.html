@@ -30,13 +30,10 @@
                         <!--@if($module_config->use_document =='Y')--><li <!--@if($where=='document')-->class="active"<!--@end-->><a href="{getAutoEncodedUrl('where','document','page',1,'division','')}"><span>{$lang->document}</span></a></li><!--@end-->
 						
                         <!--@if($module_config->use_comment =='Y')--><li <!--@if($where=='comment')-->class="active"<!--@end-->><a href="{getAutoEncodedUrl('where','comment','page',1,'division','')}"><span>{$lang->comment}</span></a></li><!--@end-->
-						<!--@if($module_config->use_trackback =='Y')-->
-                        <li <!--@if($where=='trackback')-->class="active"<!--@end-->><a href="{getAutoEncodedUrl('where','trackback','page',1,'division','')}"><span>{$lang->trackback}</span></a></li><!--@end-->
-						<!--@if($module_config->use_multimedia =='Y')-->
-                        <li <!--@if($where=='multimedia')-->class="active"<!--@end-->><a href="{getAutoEncodedUrl('where','multimedia','page',1,'division','')}"><span>{$lang->multimedia}</span></a></li><!--@end-->
-						<!--@if($module_config->use_file =='Y')-->
-                        <li <!--@if($where=='file')-->class="active"<!--@end-->><a href="{getAutoEncodedUrl('where','file','page',1,'division','')}"><span>{$lang->file}</span></a></li><!--@end-->
-						 <!--@if($module_config->use_livexe =='Y')--><li <!--@if($where=='livexe')-->class="on"<!--@end-->><a href="{getAutoEncodedUrl('where','livexe','page',1,'division','')}"><span>{$lang->livexe}</span></a></li><!--@end-->
+			<!--@if($module_config->use_trackback =='Y')--><li <!--@if($where=='trackback')-->class="active"<!--@end-->><a href="{getAutoEncodedUrl('where','trackback','page',1,'division','')}"><span>{$lang->trackback}</span></a></li><!--@end-->
+			<!--@if($module_config->use_multimedia =='Y')--><li <!--@if($where=='multimedia')-->class="active"<!--@end-->><a href="{getAutoEncodedUrl('where','multimedia','page',1,'division','')}"><span>{$lang->multimedia}</span></a></li><!--@end-->
+			<!--@if($module_config->use_file =='Y')--><li <!--@if($where=='file')-->class="active"<!--@end-->><a href="{getAutoEncodedUrl('where','file','page',1,'division','')}"><span>{$lang->file}</span></a></li><!--@end-->
+			 <!--@if($module_config->use_livexe =='Y')--><li <!--@if($where=='livexe')-->class="on"<!--@end-->><a href="{getAutoEncodedUrl('where','livexe','page',1,'division','')}"><span>{$lang->livexe}</span></a></li><!--@end-->
 		</ul>
 	</div>
 <!--@end-->

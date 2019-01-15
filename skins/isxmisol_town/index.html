@@ -1,20 +1,31 @@
 <!--#include("header.html")-->
-
+<!--@if($module_config->use_document == 'Y')-->
 {@ $output = $search_result['document'] }
 <!--#include("document.html")-->
+<!--@end-->
 
+<!--@if($module_config->use_comment == 'Y')-->
 {@ $output = $search_result['comment'] }
 <!--#include("comment.html")-->
+<!--@end-->
 
+<!--@if($module_config->use_trackback == 'Y')-->
 {@ $output = $search_result['trackback'] }
-{@ $search_target = 'title'; }
 <!--#include("trackback.html")-->
+<!--@end-->
 
+<!--@if($module_config->use_multimedia == 'Y')-->
 {@ $output = $search_result['multimedia'] }
 <!--#include("multimedia.html")-->
+<!--@end-->
 
+<!--@if($module_config->use_file == 'Y')-->
 {@ $output = $search_result['file'] }
 <!--#include("file.html")-->
+<!--@end-->
 
-{@ $_misolSearch--; }
-<!--#include("footer.html")-->
+<!--@if($module_config->use_livexe == 'Y')-->
+{@ $output = $search_result['livexe'] }
+<!--#include("livexe.html")-->
+<!--@end-->
+

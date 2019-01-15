@@ -13,11 +13,6 @@ class isxView extends isx
 	 * @brief 초기화
 	 **/
 	var $target_mid = array();
-    /**
-     * Skin
-     * @var string skin name
-     */
-    var $skin = 'default';
 
     /**
      * Initialization
@@ -45,26 +40,20 @@ class isxView extends isx
 		if(Context::get('module') == 'admin') return;
 		if($isxconfig->ac_use == 'Y')
 		{
-			if($isxconfig->ac_source == 'key')
-                $target = getSiteUrl()."modules/isx/isx.key_query.php";
-            else
-                $target = getSiteUrl()."modules/isx/isx.document_query.php";
+			if($isxconfig->ac_source == 'key')$target = getSiteUrl()."modules/isx/isx.key_query.php";
+            		else  $target = getSiteUrl()."modules/isx/isx.document_query.php";
 
 			Context::addCSSFile("./modules/isx/tpl/css/jquery.autocomplete.css", false);
 			Context::addJsFile('./modules/isx/tpl/js/jquery.autocomplete.js',false,'',null,'');
-//			$script = "<script type=\"text/javascript\">(function($){ $('input[name=\"is_keyword\"]').autocomplete( \"".$target."\", {  });})(jQuery);</script>";
-			//요~부터
 			$scr = array();
-            $scr[] = "<script type=\"text/javascript\">(function($){";
-            if($isxconfig->get_use == 'Y')
-            {
-//				$scr[] = "$('input[name=\"is_keyword\"]').parent().attr({\"method\":\"get\",\"no-error-return-url\":\"true\"}); $('input[name=\"error_return_url\"]').remove();";
-                $scr[] = "$('input[name=\"is_keyword\"]').parent().attr({\"method\":\"get\",\"no-error-return-url\":\"true\"});";
-            }
-            $scr[] = "$('input[name=\"is_keyword\"]').autocomplete( \"".$target."\", {  });";
-            $scr[] = "})(jQuery);</script>";
-            $script = implode(' ',$scr);
-			//요~~까지
+            		$scr[] = "<script type=\"text/javascript\">(function($){";
+            		if($isxconfig->get_use == 'Y')
+            		{
+                		$scr[] = "$('input[name=\"is_keyword\"]').parent().attr({\"method\":\"get\",\"no-error-return-url\":\"true\"});";
+            		}
+            		$scr[] = "$('input[name=\"is_keyword\"]').autocomplete( \"".$target."\", {  });";
+            		$scr[] = "})(jQuery);</script>";
+            		$script = implode(' ',$scr);
 			Context::addHtmlFooter($script);
 		}
 	}
@@ -178,35 +167,6 @@ class isxView extends isx
 		{
 			$this->setTemplateFile("no_keywords");
 		}
-	}
-
-	function isxHighlight($is_keyword,$output)
-	{
-		if(!count($output)) return;
-$out= new stdClass();
-	    foreach($output as $key=>$data)
-        {
-			$track = $data->variables;
-			$t=new stdClass();
-			foreach ($track as $k=>$v)
-			{
-				$v = $this->isxKeywordReplace($is_keyword,$v);
-				$t->{$k} = $v;
-            }
-			$data->variables = $t;
-			$out->{$key} = $data;
-        }
-		return $out;
-	}
-
-	function isxKeywordReplace($key,$text)
-	{
-		$keywords = explode(" ", $key);
-		foreach ($keywords as $val)
-		{
-			$text = preg_replace('/\<(li|d[tdl]|img|p|a|span|div|font)([^\>]*?)\>([^\<]*?)('.$val.')([^\>]*?)\>/is', '<$1$2>$3<span class="isx_highlight">$4</span>$5>', $text);
-		}
-		return $text;
 	}
 
 }

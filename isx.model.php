@@ -171,6 +171,7 @@ class isxModel extends module {
 	//동일한 검색어를 여러번 검색해도 저장은 하루에 한번만...
 	function getKeywordCount($keyword,$config=NULL)
 	{
+		$args = new StdClass();
 	   	$args->keyword = $keyword;
 	   	if(!$args->keyword) return;
 	   	$logged_info=Context::get('logged_info');
@@ -182,6 +183,7 @@ class isxModel extends module {
 
 	function insertKeyword($keyword,$config=NULL)
 	{
+		$args = new StdClass();
 		$args->keyword = trim($keyword);
 		$args->keyword = removeHackTag($args->keyword);
 		if(!$args->keyword) return;
@@ -207,6 +209,7 @@ class isxModel extends module {
 	//일정기간이 지난 검색어는 자동으로 삭제
 	function deleteKeyword($sdays) 
 	{
+		$args = new StdClass();
 		if(!$sdays) $sdays=60;	//기본이 60일
 		$args->regdate = date("Ymd",mktime(0,0,0,date('n'),date('j')-$sdays,date('Y')));
 		executeQuery('isx.deleteKeyword', $args);
@@ -222,35 +225,37 @@ class isxModel extends module {
 	}
 
 	function getLivexeSearch($search_target,$is_keyword,$page,$limit=20)
-    {
-        $args->page = $page;
-        $args->list_count = $limit;
-        $args->page_count = $args->page_count;
-        $args->sort_index = 'documents.regdate';
-        $args->order_type = 'desc';
+    	{
+		$args = new StdClass();
+	        $args->page = $page;
+        	$args->list_count = $limit;
+	        $args->page_count = $args->page_count;
+        	$args->sort_index = 'documents.regdate';
+	        $args->order_type = 'desc';
 
-        switch($search_target)
-        {
-            case 'tag' :
-                $args->tag = $is_keyword;
-                break;
-            case 'title' :
-                $args->title = $is_keyword;
-                break;
-            case 'content' :
-                $args->content = $is_keyword;
-                break;
-            default :
-                $args->title = $is_keyword;
-                $args->content = $is_keyword;
-                break;
-        }
-        $output = executeQueryArray('livexe.getLiveDocumentList', $args);
-        return $output;
-    }
+        	switch($search_target)
+        	{
+	            case 'tag' :
+        	        $args->tag = $is_keyword;
+                	break;
+	            case 'title' :
+        	        $args->title = $is_keyword;
+                	break;
+	            case 'content' :
+        	        $args->content = $is_keyword;
+                	break;
+	            default :
+        	        $args->title = $is_keyword;
+                	$args->content = $is_keyword;
+	                break;
+        	}
+        	$output = executeQueryArray('livexe.getLiveDocumentList', $args);
+        	return $output;
+    	}
 
 	function getKeyfromKey($key)
 	{
+		$args = new StdClass();
 		if(!$key) return;
 		$list = array();
 		$args->s_jamo = join("",$this->make_jamo($key));
@@ -274,22 +279,19 @@ class isxModel extends module {
 		$target = $config->target;
 		if(!$target) $target = 'include';
 		
-		if(empty($config->target_module_srl))
-            $module_srl_list = array();
-        else
-            $module_srl_list = explode(',',$config->target_module_srl);
-
+		if(empty($config->target_module_srl)) $module_srl_list = array();
+        	else $module_srl_list = explode(',',$config->target_module_srl);
 
 		$oIS = &getModel('integration_search');
 		$output= $oIS->getDocuments($target, $module_srl_list, 'title', $key, 1, 10);
         
 		if(!count($output->data)) return ;
-        foreach($output->data as $key=>$val){
-            $list[] = $val->get('title');
-        }
-        if(count($list)){
-            return implode("\n",$list);
-        }
+	        foreach($output->data as $key=>$val){
+        	    $list[] = $val->get('title');
+        	}
+        	if(count($list)){
+            		return implode("\n",$list);
+        	}
 	}
 }
 /* End of file isx.model.php */
