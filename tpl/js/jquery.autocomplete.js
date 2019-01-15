@@ -30,7 +30,7 @@
 			return value.replace(
 				new RegExp(
 					"(?![^&;]+;)(?!<[^<>]*)("+term.replace(/([\^\$\(\)\[\]\{\}\*\.\+\?\|\\])/gi, "\\$1")+")(?![^<>]*>)(?![^&;]+;)", "gi"
-				), "<span style=\"font-weight:bold;color:#ff0000;\">$1</span>");
+				), "<span style=\"font-weight:bold;color:#E81123;\">$1</span>");
 		}
 		// WebEngine Edited End For Highlighting
 		
