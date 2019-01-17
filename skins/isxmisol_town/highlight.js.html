@@ -1,11 +1,7 @@
-<!--@if($_misolSearch == 1905)-->
-</main>
-<!--@end-->
-<!--@if($js==0)-->
 <script  type="text/javascript">
 var src_str = $(".misolSearchSection").html();
 var term = "{$is_keyword}";
-var termSplit = term.split(' ');
+var termSplit = term.split(\' \');
 for ( var i in termSplit ) {
 var term = termSplit[i];
 term = term.replace(/(\s+)/,"(<[^>]+>)*$1(<[^>]+>)*");
@@ -13,5 +9,4 @@ var pattern = new RegExp("("+term+")", "gi");
 src_str = src_str.replace(pattern, "<mark>$1</mark>");
 src_str = src_str.replace(/(<mark>[^<>]*)((<[^>]+>)+)([^<>]*<\/mark>)/,"$1</mark>$2<mark>$4"); }
 $(".misolSearchSection").html(src_str);</script>
-{@$js++}
-<!--@end-->
+
