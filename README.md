@@ -11,3 +11,5 @@ starting version :  1.7.4.1
 검색어 하이라이트 구현 : StyleRoot
 
 한글자소분리 검색 구현 : WebEngine
+
+새로 추가한 상품검색기능은 BJ람보님의 store_search를 참조했습니다.
