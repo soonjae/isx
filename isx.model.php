@@ -293,6 +293,79 @@ class isxModel extends module {
             		return implode("\n",$list);
         	}
 	}
+	
+	function getProducts($target, $module_srls_list, $search_target, $search_keyword, $page = 1, $list_count = 20)
+                        {
+                if(is_array($module_srls_list))
+                {
+                        $module_srls_list = implode(',', $module_srls_list);
+                }
+
+                $args = new stdClass();
+                if($target == 'exclude')
+                {
+                        $module_srls_list .= ',0'; // exclude 'trash'
+                        if($module_srls_list{0} == ',')
+                        {
+                                $module_srls_list = substr($module_srls_list, 1);
+                        }
+                        $args->exclude_module_srl = $module_srls_list;
+                }
+                else
+                {
+                        $args->module_srl = $module_srls_list;
+                        $args->exclude_module_srl = '0'; // exclude 'trash'
+                }
+
+                $args->page = $page;
+                $args->list_count = $list_count;
+                $args->page_count = 10;
+                $args->search_target = $search_target;
+                $args->search_keyword = $search_keyword;
+                $args->sort_index = 'list_order';
+                $args->order_type = 'asc';
+                if(!$args->module_srl)
+                {
+                        unset($args->module_srl);
+                }
+                                // Get a list of documents
+                $oDocumentModel = getModel('document');
+
+                $documentlist_output = $oDocumentModel->getDocumentList($args);
+                if(!$documentlist_output->toBool())
+                {
+                        return $documentlist_output;
+                }
+                $args = new stdClass();
+                $document_srl_list = array();
+                $documentlist_index = array();
+                if($documentlist_output->data)
+                {
+                        foreach($documentlist_output->data as $key => $val)
+                        {
+                                $document_srl_list[] = $val->document_srl;
+                                $documentlist_index[$val->document_srl] = $key;
+                        }
+                }
+                $args->document_srl = implode(',', $document_srl_list);
+                $output = executeQueryArray('nproduct.getItemListByDocumentSrl', $args);
+                if(!$output->toBool())
+                {
+                        return $output;
+                }
+                if($output->data)
+                {
+                        foreach($output->data as $key => $val)
+                        {
+                                if($documentlist_output->data[$documentlist_index[$val->document_srl]])
+                                {
+                                        $documentlist_output->data[$documentlist_index[$val->document_srl]]->item = new nproductItem($val);
+                                }
+                        }
+                                }
+                return $documentlist_output;
+        }
+
 }
 /* End of file isx.model.php */
 /* Location: ./modules/isx/isx.model.php */
