@@ -97,6 +97,24 @@ class isxView extends isx
 		// 검색탭에 따른 검색
 		$where = Context::get('where');
 
+		//누리고 모듈 목록 
+                $oNproductModel = getAdminModel('nproduct');
+                if($oNproductModel)
+                {
+                        $product_module_srl_list = array();
+                        $modinstlist_output = executeQueryArray('nproduct.getModInstList');
+                        $tmp_arr = $modinstlist_output->data;
+                        if(!is_array($tmp_arr))
+                        {
+                                $tmp_arr = array();
+                        }
+                        foreach($tmp_arr as $key => $val)
+
+                        {
+                                $product_module_srl_list[] = $val->module_srl;
+                        }
+                }
+		
 		// integration search model객체 생성
 		if($is_keyword)
 		{
@@ -146,12 +164,19 @@ class isxView extends isx
                     			Context::set('output', $output);
                     			$this->setTemplateFile("livexe", $page);
                     			break;
-				default :
-					$output['document'] = $oIS->getDocuments($target, $module_srl_list, 'title_content', $is_keyword, $page, 5);
-					$output['comment'] = $oIS->getComments($target, $module_srl_list, $is_keyword, $page, 5);
-					$output['trackback'] = $oIS->getTrackbacks($target, $module_srl_list, 'title', $is_keyword, $page, 5);
-					$output['multimedia'] = $oIS->getImages($target, $module_srl_list, $is_keyword, $page, 5);
-					$output['file'] = $oIS->getFiles($target, $module_srl_list, $is_keyword, $page, 5);
+				case 'nproduct' :
+                                        $output = $oISx->getProducts('include', $product_module_srl_list, $search_target, $is_keyword, $page, 10);
+                                        Context::set('output', $output);
+                                        $this->setTemplateFile("nproduct", $page);
+                                        break;
+                                default :
+                                        if($isxconfig->use_document == 'Y') $output['document'] = $oIS->getDocuments($target, $module_srl_list, 'title_content', $is_keyword, $page, 5);
+                                        if($isxconfig->use_comment == 'Y') $output['comment'] = $oIS->getComments($target, $module_srl_list, $is_keyword, $page, 5);
+                                        if($isxconfig->use_trackback == 'Y') $output['trackback'] = $oIS->getTrackbacks($target, $module_srl_list, 'title', $is_keyword, $page, 5);
+                                        if($isxconfig->use_multimedia == 'Y') $output['multimedia'] = $oIS->getImages($target, $module_srl_list, $is_keyword, $page, 5);
+                                        if($isxconfig->use_file == 'Y') $output['file'] = $oIS->getFiles($target, $module_srl_list, $is_keyword, $page, 5);
+                                        if($isxconfig->use_livexe == 'Y') $output['livexe'] = $oISx->getLivexeSearch($target, $module_srl_list, $is_keyword, $page, 5);
+                                        if($isxconfig->use_nproduct == 'Y') $output['nproduct'] = $oISx->getProducts('include', $product_module_srl_list, 'title_content', $is_keyword, $page, 5);
 					Context::set('search_result', $output);
 					Context::set('search_target', 'title_content');
 					$this->setTemplateFile("index", $page);
