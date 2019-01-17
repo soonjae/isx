@@ -24,27 +24,46 @@ class isxAdminView extends isx {
 	 * @brief 설정
 	 **/
 	function dispIsxAdminConfig() {
-		// Get a list of skins
-		$oModuleModel = getModel('module');
-		$skin_list = $oModuleModel->getSkins($this->module_path);
-		Context::set('skin_list',$skin_list);
-		$mskin_list = $oModuleModel->getSkins($this->module_path, 'm.skins');
-		Context::set('mskin_list', $mskin_list);
+                // Get a list of skins
+                $oModuleModel = getModel('module');
+                $skin_list = $oModuleModel->getSkins($this->module_path);
+                Context::set('skin_list',$skin_list);
+                $mskin_list = $oModuleModel->getSkins($this->module_path, 'm.skins');
+                Context::set('mskin_list', $mskin_list);
 
-		// 템플릿 파일 지정
-		$oModuleModel = getModel('module');
-		$modules = $oModuleModel->getModuleList();
-		$moduleslist = array();
-		foreach($modules as $key=>$val)
-		{
-			$moduleslist[] = $val->module;
-		}
+                // 템플릿 파일 지정
+                $oModuleModel = getModel('module');
+                $modules = $oModuleModel->getModuleList();
+                $moduleslist = array();
+                foreach($modules as $key=>$val)
+                {
+                        $moduleslist[] = $val->module;
+                }
+                $oTrackbackModel = getAdminModel('trackback');
+                if($oTrackbackModel && in_array('trackback',$moduleslist))
+                {
+                        Context::set('TrackbackInstalled', true);
+                } else {
+                        Context::set('TrackbackInstalled', false);
+                }
+                $oLivexeModel = getAdminModel('livexe');
+                if($oLivexeModel && in_array('livexe',$moduleslist))
+                {
+                        Context::set('LivexeInstalled', true);
+                } else {
+                        Context::set('LivexeInstalled', false);
+                }
+                $oNproductModel = getAdminModel('nproduct');
+                if($oNproductModel && in_array('nproduct',$moduleslist))
+                {
+                        Context::set('NproductInstalled', true);
+                } else {
+                        Context::set('NproductInstalled', false);
+                }
 
-		if(in_array('livexe',$moduleslist)) Context::set('LivexeInstall', TRUE);
-
-		$this->setTemplatePath($this->module_path.'tpl');
-		$this->setTemplateFile('index');
-	}
+                $this->setTemplatePath($this->module_path.'tpl');
+                $this->setTemplateFile('index');
+        }
 
 	function dispIsxAdminKeywordlist() {
         // 템플릿 파일 지정
