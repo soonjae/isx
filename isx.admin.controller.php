@@ -19,45 +19,47 @@ class isxAdminController extends isx {
 	 * @brief 설정
 	 **/
 	function procIsxAdminInsertConfig()
-	{
-		$oModuleModel = &getModel('module');
-		$oModuleController = &getController('module');
-
-		$getmodules = $oModuleModel->getModuleList();
-        $moduleslist = array();
-        foreach($getmodules as $key=>$val)
         {
-            $moduleslist[] = $val->module;
-        }
+                $oModuleModel = &getModel('module');
+                $oModuleController = &getController('module');
 
-        if(in_array('store_search',$moduleslist)) return new Object(-1, 'msg_unabel_to_setup');
-		$extended = $oModuleModel->getModuleExtend('integration_search','view','');
-        if($extended && $extended !='isx') return new Object(-1, 'msg_unabel_to_install');
-		
-		// 기본 정보를 받음
-		$args = Context::getRequestVars('isx_use','use_document','use_comment','keyword_use','ac_use','ac_source','use_trackback,','use_multimedia','use_file','version','get_use');
-		
-		//확장모듈 사용시 확장, 사용하지 않으면 제거
-		if($args->isx_use !='N') 
-		{
-			if(!$oModuleModel->getModuleExtend('integration_search','view','')) $oModuleController->insertModuleExtend('integration_search','isx','view','');
-			if(!$oModuleModel->getModuleExtend('integration_search','mobile','')) $oModuleController->insertModuleExtend('integration_search','isx','mobile','');
-			if(!$oModuleModel->getTrigger('display', 'isx', 'view', 'triggerDisplay','before')) $oModuleController->insertTrigger('display', 'isx', 'view', 'triggerDisplay','before');
-			
-		}
-		else 
-		{
-			if($oModuleModel->getModuleExtend('integration_search','view','')) $oModuleController->deleteModuleExtend('integration_search', 'isx', 'view','');
-			if($oModuleModel->getModuleExtend('integration_search','mobile','')) $oModuleController->deleteModuleExtend('integration_search', 'isx', 'mobile','');
-			if($oModuleModel->getTrigger('display', 'isx', 'view', 'triggerDisplay','before')) $oModuleController->deleteTrigger('display', 'isx', 'view', 'triggerDisplay','before');
-			
-		}
-		
-		// module Controller 객체 생성하여 입력
-		$oModuleController = &getController('module');
-		$output = $oModuleController->insertModuleConfig('isx',$args);
-		return $output;
-	}
+                // 기본 정보를 받음
+                $args = new StdClass();
+                $args = Context::getRequestVars('isx_use','use_document','use_comment','keyword_use','ac_use','ac_source','use_trackback,','use_multimedia','use_file','version','get_use','skin','mskin');
+                //확장모듈 사용시 확장, 사용하지 않으면 제거
+                if($args->isx_use =='Y')
+                {
+			//isx 외의 확장모듈이 있는지 체크하고 제거
+                        $extendedview = $oModuleModel->getModuleExtend('integration_search','view','');
+                        if($extendedview && $extendedview !='isx')
+                        {
+                                $oModuleController->deleteModuleExtend('integration_search', $extendedview, 'view', '');
+                                $oModuleController->insertModuleExtend('integration_search','isx','view','');
+                        }
+                        $extendedmobile = $oModuleModel->getModuleExtend('integration_search','mobile','');
+                        if($extendedmobile && $extendedmobile !='isx')
+                        {
+                                $oModuleController->deleteModuleExtend('integration_search', $extendedmobile, 'mobile','');
+                                $oModuleController->insertModuleExtend('integration_search','isx','mobile','');
+                        }
+			//확장 및 트리거 등록
+                        if(!$oModuleModel->getModuleExtend('integration_search','view','')) $oModuleController->insertModuleExtend('integration_search','isx','view','');
+                        if(!$oModuleModel->getModuleExtend('integration_search','mobile','')) $oModuleController->insertModuleExtend('integration_search','isx','mobile','');
+                        if(!$oModuleModel->getTrigger('display', 'isx', 'view', 'triggerDisplay','before')) $oModuleController->insertTrigger('display', 'isx', 'view', 'triggerDisplay','before');
+
+                }
+                else
+                {
+		// 확장 및 트리거 제거
+                        if($oModuleModel->getModuleExtend('integration_search','view','')) $oModuleController->deleteModuleExtend('integration_search', 'isx', 'view','');
+                        if($oModuleModel->getModuleExtend('integration_search','mobile','')) $oModuleController->deleteModuleExtend('integration_search', 'isx', 'mobile','');
+                        if($oModuleModel->getTrigger('display', 'isx', 'view', 'triggerDisplay','before')) $oModuleController->deleteTrigger('display', 'isx', 'view', 'triggerDisplay','before');
+
+                }
+
+                $output = $oModuleController->insertModuleConfig('isx',$args);
+                return $output;
+        }
 
 	function procIsxAdminDeleteSearch()
 	{
